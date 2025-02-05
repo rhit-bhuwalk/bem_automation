@@ -1,0 +1,43 @@
+[project]
+name = "bem-dashboard"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "rhit-bhuwalk",email = "kushbhuwalka@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.9,<4.0"
+dependencies = [
+    "pyairtable (>=3.0.1,<4.0.0)",
+    "fastapi (>=0.115.7,<0.116.0)",
+    "uvicorn (>=0.34.0,<0.35.0)",
+    "supabase (>=2.3.4,<3.0.0)",
+    "python-dotenv (>=1.0.1,<2.0.0)",
+    "sendgrid (>=6.11.0,<7.0.0)",
+    "pymongo (>=4.11,<5.0)",
+    "motor (>=3.3.2,<4.0.0)",
+    "openpyxl (>=3.1.2,<4.0.0)",
+    "redis (>=5.2.1,<6.0.0)"
+]
+
+[tool.poetry]
+packages = [
+    { include = "api" }
+]
+package-mode = true
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+addopts = "-v --tb=short"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.4"
+pytest-asyncio = "^0.25.3"
+httpx = "^0.28.1"
+
