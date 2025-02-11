@@ -55,13 +55,10 @@ async def store_and_maybe_combine(event_id: str, field_name: str, json_data: str
                 dtc_data = json.loads(all_data["dtc_data"])
                 alert_data = json.loads(all_data["alert_data"])
                 
-                # Convert DTC code from P105C format to 105-0 format
                 dtc_code = dtc_data["type"]
                 if dtc_code.startswith("P"):
-                    # Extract the numeric part and convert the last character to a digit
                     numeric_part = dtc_code[1:4]
                     last_char = dtc_code[4] if len(dtc_code) > 4 else "0"
-                    # Convert alphabetic characters to numbers (A=0, B=1, etc.)
                     if last_char.isalpha():
                         last_digit = str(ord(last_char.upper()) - ord('A'))
                     else:
@@ -88,10 +85,11 @@ async def store_and_maybe_combine(event_id: str, field_name: str, json_data: str
                 
                 print(f"Storing incident document: {incident_doc.model_dump_json()}")
                 await incident_db.store_incident_data(incident_doc)
-                await redis_db.delete(key)  # Clean up Redis after successful MongoDB storage
+                
+                await redis_db.delete(key) 
+           
             except Exception as e:
                 print(f"Error processing incident data: {str(e)}")
-                # If there's an error, clean up Redis and re-raise
                 await redis_db.delete(key)
                 raise HTTPException(status_code=500, detail=str(e))
     except Exception as e:
